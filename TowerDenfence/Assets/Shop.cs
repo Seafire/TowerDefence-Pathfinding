@@ -2,19 +2,23 @@
 
 public class Shop : MonoBehaviour 
 {
+
+	public TurretBluePrint standardturret;
+	public TurretBluePrint missileTurret;
+
 	BuildManager buildManager;
 
 	// Use for the purchase of Standard Turret
-	public void PurchaseStandardTurret ()
+	public void SelectStandardTurret ()
 	{
 		Debug.Log ("Standard Turret Selected");
-		buildManager.SetTurretToBuild (buildManager.standardTurretPrefab);
+		buildManager.SelectTurretToBuild (standardturret);
 	}
 
-	public void PurchaseMissileTurret ()
+	public void SelectMissileTurret ()
 	{
 		Debug.Log ("Missile Turret Purchased");
-		buildManager.SetTurretToBuild (buildManager.missileTurretPrefab);
+		buildManager.SelectTurretToBuild (missileTurret);
 	}
 
 
