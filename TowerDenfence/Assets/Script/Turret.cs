@@ -3,14 +3,19 @@ using System.Collections;
 
 public class Turret : MonoBehaviour 
 {
-	[Header("Attributes")]
+	[Header("General")]
 
 	public Transform target;
 	public float range = 15.0f;
 	public float turnSpeed = 10.0f;
 
+	[Header("Use Bullets (default)")]
 	public float fireRate = 1.0f;
 	private float fireCountdown = 0.0f;
+
+	[Header("Use Lazer")]
+	public bool useLazer = false;
+	public LineRenderer lineRenderer;
 
 	[Header("SetUp Fields")]
 
@@ -59,24 +64,53 @@ public class Turret : MonoBehaviour
 	{
 		if (target == null)
 		{
+			if(useLazer)
+			{
+				if(lineRenderer.enabled)
+				{
+					lineRenderer.enabled = false;
+				}
+			}
 			return;
 		}
 
+		LookOnTarget ();
+
+		if (useLazer) 
+		{
+			Laser ();
+		} 
+		else 
+		{
+			if (fireCountdown <= 0.0f) 
+			{
+				Shoot();
+				fireCountdown = 1.0f / fireRate;
+			}
+			
+			fireCountdown -= Time.deltaTime;
+		}
+
+	}
+
+	void Laser()
+	{
+		if (!lineRenderer.enabled)
+			lineRenderer.enabled = true;
+
+		lineRenderer.SetPosition (0, firePoint.position);
+		lineRenderer.SetPosition (1, target.position);
+	}
+
+	void LookOnTarget()
+	{
+		
 		Vector3 dir = target.position - transform.position;
 		Quaternion lookRotation = Quaternion.LookRotation (dir);
 		Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
 		partToRotate.rotation = Quaternion.Euler(0.0f, rotation.y, 0.0f);
 
-		if (fireCountdown <= 0.0f) 
-		{
-			Shoot();
-			fireCountdown = 1.0f / fireRate;
-		}
-
-		fireCountdown -= Time.deltaTime;
-
 	}
-
 	void Shoot()
 	{
 		GameObject curBullet = (GameObject)Instantiate (bulletPrefab, firePoint.position, firePoint.rotation);
