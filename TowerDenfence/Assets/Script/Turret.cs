@@ -16,6 +16,8 @@ public class Turret : MonoBehaviour
 	[Header("Use Lazer")]
 	public bool useLazer = false;
 	public LineRenderer lineRenderer;
+	public ParticleSystem impactParticle;
+	public Light impactLight;
 
 	[Header("SetUp Fields")]
 
@@ -69,6 +71,8 @@ public class Turret : MonoBehaviour
 				if(lineRenderer.enabled)
 				{
 					lineRenderer.enabled = false;
+					impactParticle.Stop();
+					impactLight.enabled = false;
 				}
 			}
 			return;
@@ -95,11 +99,21 @@ public class Turret : MonoBehaviour
 
 	void Laser()
 	{
-		if (!lineRenderer.enabled)
+		if (!lineRenderer.enabled) 
+		{
 			lineRenderer.enabled = true;
-
+			impactParticle.Play();
+			impactLight.enabled = true;
+		}
 		lineRenderer.SetPosition (0, firePoint.position);
 		lineRenderer.SetPosition (1, target.position);
+		
+		Vector3 dir = firePoint.position - target.position;
+
+		impactParticle.transform.rotation = Quaternion.LookRotation (dir);
+
+		impactParticle.transform.position = target.position + dir.normalized;
+
 	}
 
 	void LookOnTarget()
