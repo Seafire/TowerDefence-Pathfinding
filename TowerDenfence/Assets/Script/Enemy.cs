@@ -3,34 +3,20 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour 
 {
-	public float speed = 10.0f;
+	public float startSpeed = 10.0f;
+	[HideInInspector]public float speed;
 
-	public int enemyHealth = 100;
+	public float enemyHealth = 100.0f;
 	public int moneyInc = 50;
 
 	public GameObject deathAffect;
 
-	private Transform target;
-	private int waypointIndex = 0;
-	// Use this for initialization
-	void Start () 
+	void Start ()
 	{
-		target = Waypoints.points [0];
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-		Vector3 dir = target.position - transform.position;
-		transform.Translate (dir.normalized * speed * Time.deltaTime, Space.World);
-
-		if (Vector3.Distance(transform.position, target.position) <=0.2f)
-		{
-			GetNextWaypoint();
-		}
+		speed = startSpeed;
 	}
 
-	public void EnemyDamage(int amount)
+	public void EnemyDamage(float amount)
 	{
 		enemyHealth -= amount;
 
@@ -38,6 +24,11 @@ public class Enemy : MonoBehaviour
 		{
 			EnemyDie();
 		}
+	}
+
+	public void Slow (float amount)
+	{
+		speed = startSpeed * (1.0f - amount);
 	}
 
 	void EnemyDie()
@@ -48,20 +39,4 @@ public class Enemy : MonoBehaviour
 		Destroy (gameObject);
 	}
 
-	void GetNextWaypoint()
-	{
-		if (waypointIndex >= Waypoints.points.Length - 1) 
-		{
-			PathEnd();
-			return;
-		}
-		waypointIndex ++;
-		target = Waypoints.points[waypointIndex];
-	}
-
-	void PathEnd()
-	{
-		PlayerStats.lives--;
-		Destroy(gameObject);
-	}
 }
