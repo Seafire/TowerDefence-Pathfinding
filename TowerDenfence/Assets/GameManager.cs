@@ -3,7 +3,15 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour 
 {
-	private bool gameOver = false;
+	public static bool gameOver;
+
+	public GameObject gameOverUI;
+
+	void Start()
+	{
+		gameOver = false;
+	}
+
 
 	// Update is called once per frame
 	void Update () 
@@ -21,5 +29,7 @@ public class GameManager : MonoBehaviour
 	{
 		gameOver = true;
 		Debug.Log ("Game Over");
+
+		gameOverUI.SetActive (true);
 	}
 }
