@@ -3,7 +3,6 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour 
 {
-	private bool doMove = true;
 	private float scrollSpeed = 5.0f;
 
 	public float panSpeed = 30.0f;
@@ -23,14 +22,6 @@ public class CameraController : MonoBehaviour
 		if (GameManager.gameOver) 
 		{
 			this.enabled = false;
-			return;
-		}
-		if(Input.GetKeyDown(KeyCode.Escape))
-		{
-			doMove = !doMove;
-		}
-		if (!doMove) 
-		{
 			return;
 		}
 		if (Input.GetKey ("w") || Input.mousePosition.y >= Screen.height - panBorderThick) 
