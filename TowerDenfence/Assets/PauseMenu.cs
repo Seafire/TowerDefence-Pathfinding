@@ -4,6 +4,8 @@ using System.Collections;
 public class PauseMenu : MonoBehaviour 
 {
 	public GameObject ui;
+	public string menuSceneName = "MainMenu";
+	public SceneFader sceneFader;
 
 	void Update ()
 	{
@@ -29,12 +31,13 @@ public class PauseMenu : MonoBehaviour
 
 	public void Retry ()
 	{
-		Time.timeScale = 1.0f;
-		Application.LoadLevel (Application.loadedLevel);
+		Toggle ();
+		sceneFader.FadeTo (Application.loadedLevelName);
 	}
 
 	public void Menu ()
 	{
-		Debug.Log ("Go TO MENU");
+		Toggle ();
+		sceneFader.FadeTo ("menuSceneName");
 	}
 }

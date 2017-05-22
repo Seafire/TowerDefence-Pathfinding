@@ -4,10 +4,11 @@ using System.Collections;
 public class MainMenu : MonoBehaviour
 {
 	public string LevelToLoad = "MainLevel";
+	public SceneFader sceneFader;
+
 	public void Play ()
 	{
-		Debug.Log("Play");
-		Application.LoadLevel (LevelToLoad);
+		sceneFader.FadeTo (LevelToLoad);
 	}
 
 	public void Quit ()
